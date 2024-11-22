@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="TimetableView">
+    <attr name="android:fontFamily" />
+    <attr name="android:textSize" />
+    <attr name="length" format="integer"/>
+    <attr name="reservedColor" format="color"/>
+    <attr name="vacantColor" format="color"/>
+  </declare-styleable>
+</resources>
