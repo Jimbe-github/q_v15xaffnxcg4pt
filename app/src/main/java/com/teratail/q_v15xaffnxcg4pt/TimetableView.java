@@ -106,6 +106,7 @@ public class TimetableView extends View {
     invalidate();
   }
 
+  private static final int RECT_DIVIDER_WIDTH = 2;
   private static final PathEffect dots = new DashPathEffect(new float[]{ 10.0f, 10.0f }, 0);
 
   @Override
@@ -117,7 +118,7 @@ public class TimetableView extends View {
     paint.setTypeface(typeface);
     paint.setTextSize(textSizePx);
     paint.setAntiAlias(true);
-    paint.setStrokeWidth(2);
+    paint.setStrokeWidth(RECT_DIVIDER_WIDTH);
 
     float textHeight = paint.descent() - paint.ascent();
     float textBaseline = getPaddingTop() - paint.ascent();
@@ -141,12 +142,16 @@ public class TimetableView extends View {
 
       paint.setColor(Color.BLACK);
       paint.setPathEffect(i%2==0 ? null : dots);
-      canvas.drawLine(left, isLabeling?getPaddingTop():rectTop, left ,rectBottom, paint);
+      canvas.drawLine(left, isLabeling?getPaddingTop():rectTop, left, rectBottom, paint);
     }
+
+    float left = canvas.getWidth() - (getPaddingRight()+RECT_DIVIDER_WIDTH);
+    paint.setPathEffect(null);
+    canvas.drawLine(left, rectTop, left, rectBottom, paint);
   }
 
   private float getX(Canvas canvas, int i) {
-    return getPaddingLeft() + (float)((canvas.getWidth()-(getPaddingLeft()+getPaddingRight())) * i) / reserveStates.length;
+    return getPaddingLeft() + (float)((canvas.getWidth()-(getPaddingLeft()+getPaddingRight()+RECT_DIVIDER_WIDTH)) * i) / reserveStates.length;
   }
 
   public interface LabelSupplier extends Serializable {
