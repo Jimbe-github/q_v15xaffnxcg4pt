@@ -122,7 +122,7 @@ public class TimetableView extends View {
     float textHeight = paint.descent() - paint.ascent();
     float textBaseline = getPaddingTop() - paint.ascent();
     float rectTop = getPaddingTop() + textHeight;
-    float rectBottom = canvas.getHeight() - (getPaddingTop() + getPaddingBottom());
+    float rectBottom = canvas.getHeight() - getPaddingBottom();
 
     float right = 0;
     for(int i=0; i<reserveStates.length; i++) {
