@@ -107,7 +107,7 @@ public class TimetableView extends View {
   }
 
   private static final int RECT_DIVIDER_WIDTH = 2;
-  private static final PathEffect dots = new DashPathEffect(new float[]{ 10.0f, 10.0f }, 0);
+  private static final PathEffect DOTS_PATH = new DashPathEffect(new float[]{ 10.0f, 10.0f }, 0);
 
   @Override
   protected void onDraw(Canvas canvas) {
@@ -141,7 +141,7 @@ public class TimetableView extends View {
       }
 
       paint.setColor(Color.BLACK);
-      paint.setPathEffect(i%2==0 ? null : dots);
+      paint.setPathEffect(i%2==0 ? null : DOTS_PATH);
       canvas.drawLine(left, isLabeling?getPaddingTop():rectTop, left, rectBottom, paint);
     }
 
