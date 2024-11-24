@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
       private final TimetableView timetableView;
       ViewHolder(ViewGroup parent) {
         itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        itemView.setTag(this);
         timetableView = itemView.findViewById(R.id.timetable1);
         timetableView.setLabelSupplier(i -> {
           if(i%2 != 0) return null;
