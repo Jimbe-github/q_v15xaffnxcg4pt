@@ -66,15 +66,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
+      private static final TimetableView.LabelSupplier LABEL_SUPPLIER = i -> {
+        if(i%2 != 0) return null;
+        int j = i/2+8;
+        return j%3==0 ? ""+j : null;
+      };
       private final TimetableView timetableView;
       ViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
         timetableView = itemView.findViewById(R.id.timetable1);
-        timetableView.setLabelSupplier(i -> {
-          if(i%2 != 0) return null;
-          int j = i/2+8;
-          return j%3==0 ? ""+j : null;
-        });
+        timetableView.setLabelSupplier(LABEL_SUPPLIER);
       }
       void bind(Item item) {
         int start = getIndex(item.start);
