@@ -1,11 +1,12 @@
 package com.teratail.q_v15xaffnxcg4pt;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.*;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
-import android.widget.*;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    ListView list = findViewById(R.id.list);
+    RecyclerView list = findViewById(R.id.list);
     Adapter adapter = new Adapter();
     list.setAdapter(adapter);
 
@@ -35,22 +36,17 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  private static class Adapter extends BaseAdapter {
+  private static class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<Item> itemList = new ArrayList<>();
 
     void add(Item item) {
       itemList.add(item);
-      notifyDataSetInvalidated();
+      notifyItemInserted(itemList.size() - 1);
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
       return itemList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-      return itemList.get(position);
     }
 
     @Override
@@ -58,18 +54,21 @@ public class MainActivity extends AppCompatActivity {
       return 0;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-      ViewHolder vh = convertView == null ? new ViewHolder(parent) : (ViewHolder)convertView.getTag();
-      return vh.bind(itemList.get(position));
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+      return new ViewHolder(parent);
     }
 
-    private static class ViewHolder {
-      private final View itemView;
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+      holder.bind(itemList.get(position));
+    }
+
+    private static class ViewHolder extends RecyclerView.ViewHolder {
       private final TimetableView timetableView;
       ViewHolder(ViewGroup parent) {
-        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        itemView.setTag(this);
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
         timetableView = itemView.findViewById(R.id.timetable1);
         timetableView.setLabelSupplier(i -> {
           if(i%2 != 0) return null;
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
           return j%3==0 ? ""+j : null;
         });
       }
-      View bind(Item item) {
+      void bind(Item item) {
         int start = getIndex(item.start);
         int endExclusive = getIndex(item.endExclusive);
         if(endExclusive == 0) endExclusive = 24*2;
@@ -86,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i=start; i<endExclusive; i++) {
           timetableView.setReserveState(i, true);
         }
-        return itemView;
       }
       private int getIndex(LocalTime time) {
         int hour = time.getHour();
